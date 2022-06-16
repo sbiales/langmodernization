@@ -1,5 +1,5 @@
 from lxml import etree
-from io import StringIO
+from io import StringIO, BytesIO
 import os
 import argparse
 from tqdm import tqdm
@@ -7,6 +7,8 @@ from tqdm import tqdm
 def main(args):
     if args.corpus == 'clmet':
         process_clmet(args.corpus_path, args.data_dir)
+    elif args.corpus == 'ced':
+        process_ced(args.corpus_path, args.data_dir)
 
 def process_clmet(path, data_dir):
     print('Processing CLMET corpus txt files')
@@ -58,6 +60,12 @@ def process_clmet(path, data_dir):
         outfile.write("\n".join(p1850_1920))
     
     print('Files saved to', outpath)
+
+def process_ced(path, data_dir):
+    print('Processing CED corpus xml files')
+    for filename in tqdm(os.listdir(path)):
+        tree = etree.parse(os.path.join(path, filename))
+        # TODO
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
