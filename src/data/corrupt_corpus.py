@@ -1,10 +1,11 @@
 import argparse
+import fasttext
+import psutil
 import random
 from datasets import load_dataset
 from nltk.corpus import stopwords
 from nltk.tokenize.treebank import TreebankWordTokenizer
 from nltk.tokenize.treebank import TreebankWordDetokenizer
-from tqdm import tqdm
 
 from src.constants import THRESHOLD, SHUFFLE_RATIO
 
@@ -19,12 +20,13 @@ def remove_stopwords(sentence):
     return sentence
 
 
-def sentence_noising(sentence, model, thresh, sr):
+def sentence_noising(sentence, thresh, sr):
+    # def sentence_noising(sentence, model, thresh, sr):
     # 1. Synonym replacement
     words = sentence.split()
     # words = [shakespeare_dict[w] if w in shakespeare_dict.keys() else w for w in words]
     corrupted = []
-    for w in tqdm(words):
+    for w in words:
         score, nearest = model.get_nearest_neighbors(w, k=1)[0]
         if score >= thresh:
             corrupted.append(nearest)
@@ -41,9 +43,10 @@ def sentence_noising(sentence, model, thresh, sr):
     return ' '.join(words)
 
 
-def corrupt(obj, model, threshold, shuffle_ratio):
+def corrupt(obj, threshold, shuffle_ratio):
     obj['corrupted'] = [remove_stopwords(t) for t in obj['text']]
-    obj['corrupted'] = [sentence_noising(t, model, thresh=threshold, sr=shuffle_ratio) for t in obj['corrupted']]
+    # obj['corrupted'] = [sentence_noising(t, model, thresh=threshold, sr=shuffle_ratio) for t in obj['corrupted']]
+    obj['corrupted'] = [sentence_noising(t, thresh=threshold, sr=shuffle_ratio) for t in obj['corrupted']]
     return obj
 
 
@@ -63,9 +66,17 @@ if __name__ == "__main__":
     detokenizer = TreebankWordDetokenizer()
     en_stopwords = set(stopwords.words('english'))
 
-    dataset = load_dataset('text', data_files={'train': args.ip_file})
-    dataset_train = dataset.map(corrupt, fn_kwargs={"model": args.model_path,
-                                                    "threshold": args.threshold,
-                                                    "shuffle_ratio": args.shuffle_ratio},
-                                batched=True)
+    dataset = load_dataset('text', data_files={'train': args.input_data})
+    model = fasttext.load_model(args.model_path)
+
+    # dataset_train = dataset.map(corrupt, fn_kwargs={"model": model,
+    #                                                 "threshold": args.threshold,
+    #                                                 "shuffle_ratio": args.sr},
+    #                             batched=True, num_proc=40)
+    dataset_train = dataset.map(corrupt, fn_kwargs={"threshold": args.threshold,
+                                                    "shuffle_ratio": args.sr},
+                                batched=True, num_proc=int(psutil.cpu_count()*.80))
     dataset_train.save_to_disk(args.out_path)
+
+    # for data in dataset_train['train']:
+    #     print(data)
