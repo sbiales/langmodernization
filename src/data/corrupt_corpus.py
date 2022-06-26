@@ -40,7 +40,7 @@ def sentence_noising(sentence, thresh, sr):
     if random.random() < sr:
        random.shuffle(corrupted)
 
-    return ' '.join(words)
+    return ' '.join(corrupted)
 
 
 def corrupt(obj, threshold, shuffle_ratio):
