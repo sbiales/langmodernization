@@ -11,8 +11,8 @@ DEFAULT_TRAIN_ARGS = {
     "do_train": True,
     "do_eval": True,
     "learning_rate": 5e-5,
-    "per_device_train_batch_size": 12,
-    "per_device_eval_batch_size": 12,
+    "per_device_train_batch_size": 8,
+    "per_device_eval_batch_size": 8,
     "warmup_steps": 100,
     "report_to": "wandb",
     "run_name": "langmod-distilgpt2",
@@ -22,7 +22,7 @@ DEFAULT_TRAIN_ARGS = {
 
 if __name__ == "__main__":
     OUT_PATH = 'train_args.json'
-    MAX_TRAIN_SAMPLES = 150000
+    MAX_TRAIN_SAMPLES = 125000
 
     if 'train' in OUT_PATH:
         conf = DEFAULT_TRAIN_ARGS

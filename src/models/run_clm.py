@@ -367,7 +367,7 @@ def main():
 
     def tokenize_function(examples):
         with CaptureLogger(tok_logger) as cl:
-            output = tokenizer(examples[text_column_name], add_special_tokens=False)
+            output = tokenizer(examples[text_column_name], add_special_tokens=True)
             # if len(output['input_ids']) >= 1:
             #     print("Example output: {}".format(tokenizer.convert_ids_to_tokens(output['input_ids'][0])))
         # clm input could be much much longer than block_size
