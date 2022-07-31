@@ -26,8 +26,7 @@ from transformers.trainer_utils import get_last_checkpoint
 from transformers.utils import check_min_version
 from transformers.utils.versions import require_version
 
-
-from src.constants import HLTokens, HLXTokens, NATokens
+import wandb
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 check_min_version("4.12.0")
@@ -223,6 +222,9 @@ def main():
 
     # Set seed before initializing model.
     set_seed(training_args.seed)
+    
+    # init wandb
+    wandb.init(project="langmod", entity="notsomonk")
 
     # Get the datasets: you can either provide your own CSV/JSON/TXT training and evaluation files (see below)
     # or just provide the name of one of the public datasets available on the hub at https://huggingface.co/datasets/
@@ -329,6 +331,7 @@ def main():
         )
 
     tokenizer.add_special_tokens({'additional_special_tokens': ["[SEP]"]})
+    logger.info("Tokenizer max length: {}".format(tokenizer.model_max_length))
 
     config.is_decoder = True
 

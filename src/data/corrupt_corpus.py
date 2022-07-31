@@ -44,9 +44,9 @@ def sentence_noising(sentence, thresh, sr):
 
 
 def corrupt(obj, threshold, shuffle_ratio):
-    obj['corrupted'] = [remove_stopwords(t) for t in obj['text']]
+    # obj['corrupted'] = [remove_stopwords(t) for t in obj['text']]
     # obj['corrupted'] = [sentence_noising(t, model, thresh=threshold, sr=shuffle_ratio) for t in obj['corrupted']]
-    obj['corrupted'] = [sentence_noising(t, thresh=threshold, sr=shuffle_ratio) for t in obj['corrupted']]
+    obj['corrupted'] = [sentence_noising(t, thresh=threshold, sr=shuffle_ratio) for t in obj['text']]
     return obj
 
 
@@ -75,7 +75,7 @@ if __name__ == "__main__":
     #                             batched=True, num_proc=40)
     dataset_train = dataset.map(corrupt, fn_kwargs={"threshold": args.threshold,
                                                     "shuffle_ratio": args.sr},
-                                batched=True, num_proc=int(psutil.cpu_count()*.80))
+                                batched=True, num_proc=int(psutil.cpu_count()))
     dataset_train.save_to_disk(args.out_path)
 
     # for data in dataset_train['train']:
