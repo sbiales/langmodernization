@@ -1,0 +1,18 @@
+{
+    "model_name_or_path": "bert-large-uncased",
+    "output_dir": "/home/mayank/models/langmod/run_bert-large-uncased-aligned_06/",
+    "dataset_path": "/home/mayank/data/langmod/corrupted/aligned_06/",
+    "num_train_epochs": 4,
+    "max_train_samples": 780000,
+    "max_eval_samples": 10000,
+    "do_train": true,
+    "do_eval": true,
+    "learning_rate": 5e-05,
+    "per_device_train_batch_size": 4,
+    "per_device_eval_batch_size": 4,
+    "warmup_steps": 100,
+    "report_to": "wandb",
+    "run_name": "langmod-bert-large-uncased-aligned_06",
+    "save_steps": 7500,
+    "eval_steps": 7500
+}

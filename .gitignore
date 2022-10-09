@@ -136,4 +136,5 @@ notebooks*/*
 .idea/
 lightning_logs*/*
 **/apps/*
+data/
 
