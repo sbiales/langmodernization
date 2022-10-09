@@ -14,6 +14,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Inference script for generating modernized text")
     parser.add_argument("-model_path", "--model_path", type=str, help="Model path")
     parser.add_argument("-input_data", "--input_data", type=str, help="Input Data path")
+    parser.add_argument("-output_data", "--output_data", type=str, help="Input Data path")
     args = parser.parse_args()
 
     print(f"Loading data from {args.input_data}")
@@ -49,18 +50,19 @@ if __name__ == "__main__":
         # print(res)
         # print("Output: {}".format(post_processing(res)) + '\n' + 100 * '-')
 
-        #For GPT-2
+        # For GPT-2
         # out = res[0].split("[SEP]")[1]
         # out = out.split('"``')[0]
 
         #For BERT
         out = res[0].split("[SEP]")[2]
-        # print(out)
+
+        print(out)
         gen_sents.append(out)
 
         # print("----------")
     data['generated'] = gen_sents
-    # data.to_csv(args.input_data, sep='\t', index=False)
+    data.to_csv(args.output_data, sep='\t', index=False)
 
     bleu = BLEU()
     print(f"Model: {MODEL}")

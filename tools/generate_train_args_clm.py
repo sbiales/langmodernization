@@ -22,20 +22,24 @@ DEFAULT_TRAIN_ARGS = {
 
 if __name__ == "__main__":
     OUT_PATH = 'train_args.json'
-    MAX_TRAIN_SAMPLES = 950000
+    # MAX_TRAIN_SAMPLES = 950000
+    MAX_TRAIN_SAMPLES = 780000
     MODEL_NAME = "bert-large-uncased"  # huggingface model name with org name if exists
+    # MODEL_NAME = "distilgpt2"
     
     if 'train' in OUT_PATH:
         conf = DEFAULT_TRAIN_ARGS
         conf['model_name_or_path'] = MODEL_NAME
-        conf['output_dir'] = conf['output_dir'].format(MODEL_NAME)
-        conf['run_name'] = conf['run_name'].format(MODEL_NAME)
+        conf['output_dir'] = conf['output_dir'].format(MODEL_NAME+"-aligned_06")
+        conf['run_name'] = conf['run_name'].format(MODEL_NAME+"-aligned_06")
         # conf['output_dir'] = OUT_MODEL.format(conf['run_name'], TOTAL_DATAPOINTS)
         # conf['dataset_path'] = MERGED_DATA_PATH
-        conf['dataset_path'] = "/home/mayank/data/w_sw_1m/"
+        conf['dataset_path'] = "/home/mayank/data/langmod/corrupted/aligned_06/"
         conf['max_train_samples'] = MAX_TRAIN_SAMPLES
-        conf['num_train_epochs'] = 8
-        conf['save_steps'] = 5000
-        conf['eval_steps'] = 5000
+        conf['num_train_epochs'] = 4
+        conf['save_steps'] = 7500
+        conf['eval_steps'] = 7500
+        conf['per_device_train_batch_size'] = 4
+        conf['per_device_eval_batch_size'] = 4
 
         json.dump(conf, open(OUT_PATH, 'w'), indent=4)
