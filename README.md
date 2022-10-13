@@ -70,7 +70,7 @@ Format: `python3 src/inference/infer_clm_gpt.py --model_path <trained_model_path
 
 We have two sets of results to present and compare. The first set is using unaligned fasttext embeddings. The second set is using the old corpus aligned to the modern corpus.
 
-In the best case scenario, the models should have more overlap with `gold modern text` and less overlap with `old text`.
+In the best case scenario, the models should have more overlap with `gold modern text` and less overlap with `old text` because when it should learn to modernize the old text given to it.
 
 |                               | GPT-2   |       |   | BERT    |       |
 |-------------------------------|---------|-------|---|---------|-------|
