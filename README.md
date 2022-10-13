@@ -70,6 +70,8 @@ Format: `python3 src/inference/infer_clm_gpt.py --model_path <trained_model_path
 
 We have two sets of results to present and compare. The first set is using unaligned fasttext embeddings. The second set is using the old corpus aligned to the modern corpus.
 
+In the best case scenario, the models should have more overlap with `gold modern text` and less overlap with `old text`.
+
 |                               | GPT-2   |       |   | BERT    |       |
 |-------------------------------|---------|-------|---|---------|-------|
 |                               | ROUGE-L | BLEU  |   | ROUGE-L | BLEU  |
@@ -83,3 +85,5 @@ After aligning our embeddings and removing any instances in the training data wh
 |                               | ROUGE-L | BLEU  |   | ROUGE-L | BLEU  |
 | Overlap with gold modern text |  0.318  | 27.04 |   | 0.481   | 32.98 |
 | Overlap with old text         |  0.468  | 59.92 |   | 0.726   | 73.65 |
+
+As shown in the table above, we do see significantly lesser overlap with the `old text` but we also see lesser overlap with the `gold modern text`. This requires further investigation into this method.
